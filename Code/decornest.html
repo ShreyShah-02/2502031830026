@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DecorNest – Curated Home Decor Ideas</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+
+  <style>
+    /* ─── CSS Variables ─── */
+    :root {
+      --cream:   #F7F3EE;
+      --sand:    #E8DECE;
+      --warm:    #C9A87C;
+      --terracotta: #B56A4A;
+      --earth:   #6B4F3A;
+      --dark:    #1E1A17;
+      --sage:    #8A9E85;
+      --mist:    #D4DDD2;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body:    'DM Sans', sans-serif;
+    }
+
+    /* ─── Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      font-family: var(--font-body);
+      font-size: 15px;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── Custom Cursor ─── */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--terracotta);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, width 0.3s, height 0.3s, background 0.3s;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--terracotta);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: left 0.12s ease, top 0.12s ease, width 0.3s, height 0.3s;
+      opacity: 0.6;
+    }
+    body:hover .cursor { opacity: 1; }
+
+    /* ─── Noise Texture Overlay ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9990;
+      opacity: 0.4;
+    }
+
+    /* ─── Scrollbar ─── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--cream); }
+    ::-webkit-scrollbar-thumb { background: var(--warm); border-radius: 10px; }
+
+    /* ─── Navbar ─── */
+    .navbar {
+      background: transparent;
+      padding: 24px 0;
+      transition: background 0.4s, padding 0.4s, backdrop-filter 0.4s;
+      z-index: 1000;
+    }
+    .navbar.scrolled {
+      background: rgba(247,243,238,0.88);
+      backdrop-filter: blur(16px);
+      padding: 14px 0;
+      box-shadow: 0 1px 24px rgba(107,79,58,0.08);
+    }
+    .navbar-brand {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      font-weight: 600;
+      color: var(--earth) !important;
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .navbar-brand span { color: var(--terracotta); font-style: italic; }
+    .nav-link {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 13px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--earth) !important;
+      padding: 6px 18px !important;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 18px; right: 18px;
+      height: 1px;
+      background: var(--terracotta);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+      transform-origin: left;
+    }
+    .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+    .navbar-toggler { border: none; outline: none; box-shadow: none !important; }
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%236B4F3A' stroke-width='2' stroke-linecap='round' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    .btn-nav {
+      background: var(--terracotta);
+      color: #fff !important;
+      border-radius: 2px;
+      padding: 8px 22px !important;
+      font-size: 12px !important;
+      letter-spacing: 1.5px;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-nav:hover { background: var(--earth); transform: translateY(-1px); }
+    .btn-nav::after { display: none; }
+
+    /* ─── Hero ─── */
+    #hero {
+      min-height: 100vh;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 100px;
+    }
+    .hero-bg-shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      animation: floatBlob 8s ease-in-out infinite alternate;
+    }
+    .blob1 { width: 600px; height: 600px; background: rgba(201,168,124,0.18); top: -150px; right: -100px; }
+    .blob2 { width: 400px; height: 400px; background: rgba(138,158,133,0.14); bottom: -80px; left: -80px; animation-delay: 3s; }
+    @keyframes floatBlob { from { transform: scale(1) translate(0,0); } to { transform: scale(1.08) translate(20px,20px); } }
+
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 32px; height: 1px;
+      background: var(--terracotta);
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.4rem, 7vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.0;
+      color: var(--dark);
+      letter-spacing: -1px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.35s forwards;
+    }
+    .hero-title em { color: var(--terracotta); font-style: italic; font-weight: 300; }
+    .hero-subtitle {
+      font-size: 15px;
+      color: #7a6a5a;
+      max-width: 430px;
+      line-height: 1.75;
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.5s forwards;
+    }
+    .hero-cta-group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 36px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.65s forwards;
+    }
+    .btn-primary-custom {
+      background: var(--terracotta);
+      color: #fff;
+      border: none;
+      border-radius: 2px;
+      padding: 14px 36px;
+      font-size: 12px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      font-family: var(--font-body);
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary-custom:hover { background: var(--earth); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(107,79,58,0.22); color: #fff; }
+    .btn-outline-custom {
+      background: transparent;
+      color: var(--earth);
+      border: 1px solid var(--earth);
+      border-radius: 2px;
+      padding: 14px 36px;
+      font-size: 12px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      font-family: var(--font-body);
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-outline-custom:hover { background: var(--earth); color: #fff; transform: translateY(-2px); }
+
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      margin-top: 56px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.8s forwards;
+      flex-wrap: wrap;
+    }
+    .stat-item { display: flex; flex-direction: column; }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: var(--earth);
+      line-height: 1;
+    }
+    .stat-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #a08870; margin-top: 4px; }
+
+    /* Hero Image Mosaic */
+    .hero-mosaic {
+      position: relative;
+      height: 560px;
+      opacity: 0;
+      animation: fadeIn 1.2s 0.5s forwards;
+    }
+    .mosaic-card {
+      position: absolute;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(107,79,58,0.14);
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .mosaic-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .mosaic-card:hover { transform: scale(1.03) translateY(-4px); }
+    .mc1 { width: 250px; height: 320px; top: 40px; left: 30px; }
+    .mc2 { width: 200px; height: 220px; top: 0; left: 300px; }
+    .mc3 { width: 180px; height: 260px; top: 250px; left: 300px; }
+    .mc4 { width: 150px; height: 180px; top: 100px; left: 510px; }
+    .floating-badge {
+      position: absolute;
+      background: var(--dark);
+      color: var(--cream);
+      padding: 14px 20px;
+      border-radius: 4px;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      z-index: 10;
+      min-width: 160px;
+      box-shadow: 0 8px 24px rgba(30,26,23,0.2);
+    }
+    .floating-badge.badge1 { bottom: 60px; left: 10px; animation: floatY 3s ease-in-out infinite alternate; }
+    .floating-badge.badge2 { top: 30px; right: 0; animation: floatY 3.5s ease-in-out 0.5s infinite alternate; }
+    .badge-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; margin-bottom: 2px; }
+    .badge-value { font-family: var(--font-display); font-size: 1.3rem; font-weight: 300; }
+    @keyframes floatY { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* ─── Section Shared ─── */
+    .section-eyebrow {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .section-eyebrow::before {
+      content: '';
+      width: 28px; height: 1px;
+      background: var(--terracotta);
+      display: inline-block;
+    }
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--dark);
+    }
+    .section-heading em { color: var(--terracotta); font-style: italic; }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── Marquee ─── */
+    .marquee-band {
+      background: var(--dark);
+      padding: 16px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-track {
+      display: inline-flex;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-item {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--cream);
+      padding: 0 36px;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .marquee-dot { width: 5px; height: 5px; background: var(--warm); border-radius: 50%; display: inline-block; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ─── Categories ─── */
+    #categories { padding: 100px 0; background: var(--cream); }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 16px;
+      margin-top: 52px;
+    }
+    .cat-card {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: none;
+    }
+    .cat-card:first-child { grid-row: span 2; }
+    .cat-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .cat-card img { min-height: 220px; }
+    .cat-card:first-child img { min-height: 480px; }
+    .cat-card:hover img { transform: scale(1.06); }
+    .cat-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(30,26,23,0.72) 0%, transparent 55%);
+      display: flex;
+      align-items: flex-end;
+      padding: 24px;
+      transition: background 0.4s;
+    }
+    .cat-card:hover .cat-overlay { background: linear-gradient(to top, rgba(30,26,23,0.85) 0%, rgba(30,26,23,0.1) 60%); }
+    .cat-name {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.1;
+    }
+    .cat-count { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-top: 4px; }
+    .cat-arrow {
+      margin-left: auto;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      transform: rotate(-45deg) translateX(-10px);
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .cat-card:hover .cat-arrow { opacity: 1; transform: rotate(0deg) translateX(0); }
+
+    /* ─── How It Works ─── */
+    #how { background: var(--dark); padding: 100px 0; position: relative; overflow: hidden; }
+    #how::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      background: rgba(201,168,124,0.06);
+      border-radius: 50%;
+      top: -100px; right: -200px;
+      filter: blur(80px);
+    }
+    .step-line {
+      position: absolute;
+      top: 50%;
+      left: 0; right: 0;
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      z-index: 0;
+    }
+    .step-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 4px;
+      padding: 40px 32px;
+      position: relative;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      height: 100%;
+    }
+    .step-card:hover { background: rgba(201,168,124,0.08); border-color: rgba(201,168,124,0.3); transform: translateY(-6px); }
+    .step-num {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.08);
+      line-height: 1;
+      margin-bottom: 16px;
+      transition: color 0.3s;
+    }
+    .step-card:hover .step-num { color: rgba(201,168,124,0.3); }
+    .step-icon {
+      width: 48px; height: 48px;
+      background: rgba(201,168,124,0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--warm);
+      font-size: 20px;
+      margin-bottom: 20px;
+      transition: background 0.3s;
+    }
+    .step-card:hover .step-icon { background: rgba(201,168,124,0.25); }
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+    .step-desc { font-size: 13px; color: rgba(247,243,238,0.55); line-height: 1.75; }
+
+    /* ─── Featured Rooms ─── */
+    #rooms { padding: 100px 0; background: var(--sand); }
+    .room-filter {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 36px;
+      margin-bottom: 48px;
+    }
+    .filter-btn {
+      background: transparent;
+      border: 1px solid rgba(107,79,58,0.25);
+      border-radius: 2px;
+      padding: 8px 20px;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--earth);
+      font-family: var(--font-body);
+      cursor: none;
+      transition: all 0.25s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--terracotta);
+      color: #fff;
+      border-color: var(--terracotta);
+    }
+    .room-card {
+      background: var(--cream);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.4s, box-shadow 0.4s;
+      height: 100%;
+    }
+    .room-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(107,79,58,0.14); }
+    .room-img-wrap { position: relative; overflow: hidden; height: 260px; }
+    .room-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .room-card:hover .room-img-wrap img { transform: scale(1.07); }
+    .room-tag {
+      position: absolute;
+      top: 16px; left: 16px;
+      background: var(--cream);
+      color: var(--earth);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 2px;
+    }
+    .room-save {
+      position: absolute;
+      top: 16px; right: 16px;
+      width: 36px; height: 36px;
+      background: rgba(247,243,238,0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: var(--earth);
+      cursor: none;
+      border: none;
+      transition: background 0.3s, color 0.3s;
+    }
+    .room-save:hover, .room-save.saved { background: var(--terracotta); color: #fff; }
+    .room-body { padding: 24px; }
+    .room-style { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 6px; }
+    .room-name {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 300;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .room-desc { font-size: 12.5px; color: #7a6a5a; line-height: 1.65; margin-bottom: 16px; }
+    .room-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--sand);
+    }
+    .room-price { font-family: var(--font-display); font-size: 1.25rem; color: var(--earth); }
+    .room-rating { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--warm); }
+
+    /* ─── Quiz CTA ─── */
+    #quiz {
+      padding: 100px 0;
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+    }
+    .quiz-inner {
+      background: var(--earth);
+      border-radius: 8px;
+      padding: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .quiz-inner::before {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 50%;
+      top: -100px; right: -80px;
+    }
+    .quiz-inner::after {
+      content: '';
+      position: absolute;
+      width: 250px; height: 250px;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 50%;
+      bottom: -60px; right: 80px;
+    }
+    .quiz-eyebrow { color: var(--warm) !important; }
+    .quiz-eyebrow::before { background: var(--warm) !important; }
+    .quiz-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1.1;
+    }
+    .quiz-heading em { color: var(--warm); font-style: italic; }
+    .quiz-sub { color: rgba(247,243,238,0.65); font-size: 14px; line-height: 1.75; margin-top: 16px; max-width: 380px; }
+    .quiz-options { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .quiz-opt {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 2px;
+      padding: 10px 20px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: rgba(247,243,238,0.75);
+      cursor: none;
+      transition: all 0.25s;
+    }
+    .quiz-opt:hover, .quiz-opt.selected { background: var(--warm); color: var(--dark); border-color: var(--warm); }
+    .btn-quiz {
+      background: var(--warm);
+      color: var(--dark);
+      border: none;
+      border-radius: 2px;
+      padding: 14px 40px;
+      font-size: 12px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      font-family: var(--font-body);
+      font-weight: 500;
+      cursor: none;
+      transition: background 0.3s, transform 0.2s;
+      margin-top: 28px;
+    }
+    .btn-quiz:hover { background: #e0b87a; transform: translateY(-2px); }
+    .quiz-img-wrap { position: relative; height: 400px; border-radius: 4px; overflow: hidden; }
+    .quiz-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .quiz-img-tag {
+      position: absolute;
+      bottom: 20px; left: 20px;
+      background: var(--cream);
+      padding: 12px 18px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--earth);
+      letter-spacing: 0.5px;
+    }
+
+    /* ─── Testimonials ─── */
+    #testimonials { background: var(--sand); padding: 100px 0; }
+    .testi-card {
+      background: var(--cream);
+      border-radius: 4px;
+      padding: 40px 36px;
+      height: 100%;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .testi-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(107,79,58,0.1); }
+    .testi-quote {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      color: var(--warm);
+      line-height: 0.8;
+      margin-bottom: 20px;
+    }
+    .testi-text {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--dark);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .testi-author { display: flex; align-items: center; gap: 14px; }
+    .testi-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .testi-name { font-size: 13px; font-weight: 500; color: var(--dark); }
+    .testi-loc { font-size: 11px; letter-spacing: 1px; color: #a08870; text-transform: uppercase; }
+    .stars { color: var(--warm); font-size: 12px; margin-bottom: 14px; }
+
+    /* ─── Newsletter ─── */
+    #newsletter {
+      background: var(--cream);
+      padding: 80px 0;
+      border-top: 1px solid var(--sand);
+    }
+    .newsletter-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .newsletter-heading {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: var(--dark);
+    }
+    .newsletter-heading em { color: var(--terracotta); font-style: italic; }
+    .newsletter-sub { font-size: 13px; color: #7a6a5a; margin-top: 8px; }
+    .newsletter-form { display: flex; gap: 0; flex: 1; min-width: 280px; max-width: 440px; }
+    .newsletter-input {
+      flex: 1;
+      background: var(--sand);
+      border: 1px solid rgba(107,79,58,0.2);
+      border-right: none;
+      border-radius: 2px 0 0 2px;
+      padding: 14px 20px;
+      font-size: 13px;
+      font-family: var(--font-body);
+      color: var(--dark);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .newsletter-input:focus { border-color: var(--warm); }
+    .newsletter-input::placeholder { color: #a08870; }
+    .newsletter-submit {
+      background: var(--terracotta);
+      color: #fff;
+      border: none;
+      border-radius: 0 2px 2px 0;
+      padding: 14px 24px;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-family: var(--font-body);
+      cursor: none;
+      transition: background 0.3s;
+    }
+    .newsletter-submit:hover { background: var(--earth); }
+
+    /* ─── Footer ─── */
+    footer {
+      background: var(--dark);
+      padding: 72px 0 32px;
+      color: rgba(247,243,238,0.5);
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--cream);
+      letter-spacing: -0.5px;
+      display: block;
+      margin-bottom: 16px;
+      text-decoration: none;
+    }
+    .footer-logo span { color: var(--warm); font-style: italic; }
+    .footer-tagline { font-size: 12.5px; line-height: 1.7; max-width: 240px; }
+    .footer-socials { display: flex; gap: 12px; margin-top: 24px; }
+    .social-link {
+      width: 38px; height: 38px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(247,243,238,0.5);
+      font-size: 15px;
+      text-decoration: none;
+      transition: border-color 0.3s, color 0.3s, background 0.3s;
+    }
+    .social-link:hover { border-color: var(--warm); color: var(--warm); background: rgba(201,168,124,0.08); }
+    .footer-heading { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--cream); margin-bottom: 20px; }
+    .footer-links { list-style: none; padding: 0; }
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a {
+      color: rgba(247,243,238,0.5);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--warm); }
+    .footer-divider { border-color: rgba(255,255,255,0.07); margin: 40px 0 28px; }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* ─── Back to Top ─── */
+    #backTop {
+      position: fixed;
+      bottom: 32px; right: 32px;
+      width: 44px; height: 44px;
+      background: var(--terracotta);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      cursor: none;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s, background 0.3s;
+      box-shadow: 0 4px 20px rgba(181,106,74,0.35);
+    }
+    #backTop.show { opacity: 1; pointer-events: all; }
+    #backTop:hover { background: var(--earth); transform: translateY(-3px); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 992px) {
+      .cat-grid { grid-template-columns: repeat(2, 1fr); }
+      .cat-card:first-child { grid-row: auto; }
+      .quiz-inner { padding: 48px 36px; }
+      .hero-mosaic { display: none; }
+    }
+    @media (max-width: 768px) {
+      .cat-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 32px; }
+      .newsletter-wrap { flex-direction: column; align-items: flex-start; }
+      .newsletter-form { max-width: 100%; width: 100%; }
+    }
+    @media (max-width: 576px) {
+      .quiz-inner { padding: 40px 24px; }
+      .hero-cta-group { flex-direction: column; }
+      .btn-primary-custom, .btn-outline-custom { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Back to Top -->
+<button id="backTop"><i class="bi bi-arrow-up"></i></button>
+
+<!-- ─────────────── NAVBAR ─────────────── -->
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="#">Decor<span>Nest</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+      <ul class="navbar-nav align-items-lg-center gap-lg-1 mb-3 mb-lg-0">
+        <li class="nav-item"><a class="nav-link active" href="#categories">Rooms</a></li>
+        <li class="nav-item"><a class="nav-link" href="#rooms">Inspirations</a></li>
+        <li class="nav-item"><a class="nav-link" href="#how">How It Works</a></li>
+        <li class="nav-item"><a class="nav-link" href="#testimonials">Reviews</a></li>
+        <li class="nav-item ms-lg-2"><a class="nav-link btn-nav" href="#quiz">Get Started</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ─────────────── HERO ─────────────── -->
+<section id="hero">
+  <div class="hero-bg-shape blob1"></div>
+  <div class="hero-bg-shape blob2"></div>
+  <div class="container position-relative" style="z-index:1;">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="hero-eyebrow">Curated Home Decor</div>
+        <h1 class="hero-title">Transform Your<br><em>Living Space</em></h1>
+        <p class="hero-subtitle">Discover handpicked decor ideas tailored to your taste. From cozy Scandinavian nooks to sun-drenched Bohemian retreats — your dream home starts here.</p>
+        <div class="hero-cta-group">
+          <a href="#rooms" class="btn-primary-custom">Explore Rooms</a>
+          <a href="#quiz" class="btn-outline-custom">Take Style Quiz</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-num counter" data-target="1200">0</span>
+            <span class="stat-label">Decor Ideas</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num counter" data-target="48">0</span>
+            <span class="stat-label">Style Themes</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num counter" data-target="9400">0</span>
+            <span class="stat-label">Happy Homes</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 d-none d-lg-block">
+        <div class="hero-mosaic">
+          <div class="mosaic-card mc1">
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&auto=format&fit=crop" alt="Living Room"/>
+          </div>
+          <div class="mosaic-card mc2">
+            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&auto=format&fit=crop" alt="Bedroom"/>
+          </div>
+          <div class="mosaic-card mc3">
+            <img src="https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=400&auto=format&fit=crop" alt="Kitchen"/>
+          </div>
+          <div class="mosaic-card mc4">
+            <img src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=300&auto=format&fit=crop" alt="Dining"/>
+          </div>
+          <div class="floating-badge badge1">
+            <div class="badge-label">Trending Style</div>
+            <div class="badge-value">Japandi</div>
+          </div>
+          <div class="floating-badge badge2">
+            <div class="badge-label">New This Week</div>
+            <div class="badge-value">+84 Ideas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── MARQUEE ─────────────── -->
+<div class="marquee-band">
+  <div class="marquee-track">
+    <span class="marquee-item">Scandinavian Minimalism<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Boho Chic<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Mid-Century Modern<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Japandi Style<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Industrial Loft<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Coastal Farmhouse<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Art Deco Revival<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Earthy Organic<span class="marquee-dot"></span></span>
+    <!-- duplicate for seamless -->
+    <span class="marquee-item">Scandinavian Minimalism<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Boho Chic<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Mid-Century Modern<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Japandi Style<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Industrial Loft<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Coastal Farmhouse<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Art Deco Revival<span class="marquee-dot"></span></span>
+    <span class="marquee-item">Earthy Organic<span class="marquee-dot"></span></span>
+  </div>
+</div>
+
+<!-- ─────────────── CATEGORIES ─────────────── -->
+<section id="categories">
+  <div class="container">
+    <div class="row justify-content-between align-items-end reveal">
+      <div class="col-lg-6">
+        <div class="section-eyebrow">Browse by Room</div>
+        <h2 class="section-heading">Every Corner,<br><em>Thoughtfully Designed</em></h2>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <p style="color:#7a6a5a; font-size:13.5px; line-height:1.75;">Explore curated decor ideas for each room in your home — from serene bedrooms to vibrant kitchens.</p>
+      </div>
+    </div>
+    <div class="cat-grid reveal">
+      <!-- Living Room (large) -->
+      <div class="cat-card">
+        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&auto=format&fit=crop" alt="Living Room"/>
+        <div class="cat-overlay">
+          <div>
+            <div class="cat-name">Living Room</div>
+            <div class="cat-count">320 Ideas</div>
+          </div>
+          <div class="cat-arrow"><i class="bi bi-arrow-right"></i></div>
+        </div>
+      </div>
+      <!-- Bedroom -->
+      <div class="cat-card">
+        <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=500&auto=format&fit=crop" alt="Bedroom"/>
+        <div class="cat-overlay">
+          <div>
+            <div class="cat-name">Bedroom</div>
+            <div class="cat-count">240 Ideas</div>
+          </div>
+          <div class="cat-arrow"><i class="bi bi-arrow-right"></i></div>
+        </div>
+      </div>
+      <!-- Kitchen -->
+      <div class="cat-card">
+        <img src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=500&auto=format&fit=crop" alt="Kitchen"/>
+        <div class="cat-overlay">
+          <div>
+            <div class="cat-name">Kitchen</div>
+            <div class="cat-count">185 Ideas</div>
+          </div>
+          <div class="cat-arrow"><i class="bi bi-arrow-right"></i></div>
+        </div>
+      </div>
+      <!-- Bathroom -->
+      <div class="cat-card">
+        <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=500&auto=format&fit=crop" alt="Bathroom"/>
+        <div class="cat-overlay">
+          <div>
+            <div class="cat-name">Bathroom</div>
+            <div class="cat-count">140 Ideas</div>
+          </div>
+          <div class="cat-arrow"><i class="bi bi-arrow-right"></i></div>
+        </div>
+      </div>
+      <!-- Home Office -->
+      <div class="cat-card">
+        <img src="https://images.unsplash.com/photo-1593642532842-98d0fd5ebc1a?w=500&auto=format&fit=crop" alt="Home Office"/>
+        <div class="cat-overlay">
+          <div>
+            <div class="cat-name">Home Office</div>
+            <div class="cat-count">200 Ideas</div>
+          </div>
+          <div class="cat-arrow"><i class="bi bi-arrow-right"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── HOW IT WORKS ─────────────── -->
+<section id="how">
+  <div class="container">
+    <div class="row justify-content-center text-center mb-5 reveal">
+      <div class="col-lg-6">
+        <div class="section-eyebrow justify-content-center" style="color:var(--warm);">
+          <span style="display:inline-block; width:28px; height:1px; background:var(--warm);"></span>
+          The Process
+        </div>
+        <h2 class="section-heading" style="color:var(--cream);">From <em>Vision</em> to<br>Reality in 3 Steps</h2>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4 reveal">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-icon"><i class="bi bi-palette2"></i></div>
+          <div class="step-title">Take the Style Quiz</div>
+          <div class="step-desc">Answer a few simple questions about your taste, lifestyle, and budget. Our algorithm matches you with your unique decor personality.</div>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-icon"><i class="bi bi-grid-1x2"></i></div>
+          <div class="step-title">Browse Curated Ideas</div>
+          <div class="step-desc">Explore personalized room ideas, mood boards, and product collections hand-selected for your specific style profile and space dimensions.</div>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="step-num">03</div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-icon"><i class="bi bi-house-heart"></i></div>
+          <div class="step-title">Transform Your Home</div>
+          <div class="step-desc">Save your favourites, build shopping lists, and bring your dream space to life with our step-by-step implementation guides.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── FEATURED ROOMS ─────────────── -->
+<section id="rooms">
+  <div class="container">
+    <div class="row align-items-end reveal">
+      <div class="col-lg-7">
+        <div class="section-eyebrow">Inspiration Gallery</div>
+        <h2 class="section-heading">Rooms That<br><em>Inspire</em> & Delight</h2>
+      </div>
+      <div class="col-lg-5">
+        <div class="room-filter justify-content-lg-end" id="roomFilter">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="scandinavian">Scandinavian</button>
+          <button class="filter-btn" data-filter="bohemian">Bohemian</button>
+          <button class="filter-btn" data-filter="japandi">Japandi</button>
+          <button class="filter-btn" data-filter="modern">Modern</button>
+        </div>
+      </div>
+    </div>
+    <div class="row g-4" id="roomGrid">
+      <!-- Room 1 -->
+      <div class="col-lg-4 col-md-6 room-item" data-style="scandinavian">
+        <div class="room-card reveal">
+          <div class="room-img-wrap">
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&auto=format&fit=crop" alt="Serene Scandinavian Living"/>
+            <span class="room-tag">Living Room</span>
+            <button class="room-save" onclick="toggleSave(this)"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="room-body">
+            <div class="room-style">Scandinavian</div>
+            <div class="room-name">Serene Nordic Living</div>
+            <div class="room-desc">Clean lines, natural textures, and soft whites create a calm, functional sanctuary.</div>
+            <div class="room-footer">
+              <div class="room-price">From ₹45,000</div>
+              <div class="room-rating"><i class="bi bi-star-fill"></i> 4.9 <span style="color:#a08870;">(128)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Room 2 -->
+      <div class="col-lg-4 col-md-6 room-item" data-style="bohemian">
+        <div class="room-card reveal">
+          <div class="room-img-wrap">
+            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&auto=format&fit=crop" alt="Boho Dream Bedroom"/>
+            <span class="room-tag">Bedroom</span>
+            <button class="room-save" onclick="toggleSave(this)"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="room-body">
+            <div class="room-style">Bohemian</div>
+            <div class="room-name">Boho Dream Retreat</div>
+            <div class="room-desc">Layered textiles, warm earthy tones, and handcrafted accents for a soulful escape.</div>
+            <div class="room-footer">
+              <div class="room-price">From ₹32,000</div>
+              <div class="room-rating"><i class="bi bi-star-fill"></i> 4.8 <span style="color:#a08870;">(96)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Room 3 -->
+      <div class="col-lg-4 col-md-6 room-item" data-style="japandi">
+        <div class="room-card reveal">
+          <div class="room-img-wrap">
+            <img src="https://images.unsplash.com/photo-1617806118233-18e1de247200?w=600&auto=format&fit=crop" alt="Japandi Zen Space"/>
+            <span class="room-tag">Living Room</span>
+            <button class="room-save" onclick="toggleSave(this)"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="room-body">
+            <div class="room-style">Japandi</div>
+            <div class="room-name">Wabi-Sabi Zen Space</div>
+            <div class="room-desc">Blending Japanese simplicity with Scandinavian warmth — pure meditative elegance.</div>
+            <div class="room-footer">
+              <div class="room-price">From ₹58,000</div>
+              <div class="room-rating"><i class="bi bi-star-fill"></i> 5.0 <span style="color:#a08870;">(74)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Room 4 -->
+      <div class="col-lg-4 col-md-6 room-item" data-style="modern">
+        <div class="room-card reveal">
+          <div class="room-img-wrap">
+            <img src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=600&auto=format&fit=crop" alt="Modern Kitchen"/>
+            <span class="room-tag">Kitchen</span>
+            <button class="room-save" onclick="toggleSave(this)"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="room-body">
+            <div class="room-style">Modern</div>
+            <div class="room-name">Sleek Culinary Studio</div>
+            <div class="room-desc">Handleless cabinetry, natural stone surfaces, and smart storage solutions.</div>
+            <div class="room-footer">
+              <div class="room-price">From ₹72,000</div>
+              <div class="room-rating"><i class="bi bi-star-fill"></i> 4.7 <span style="color:#a08870;">(52)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Room 5 -->
+      <div class="col-lg-4 col-md-6 room-item" data-style="scandinavian">
+        <div class="room-card reveal">
+          <div class="room-img-wrap">
+            <img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600&auto=format&fit=crop" alt="Nordic Home Office"/>
+            <span class="room-tag">Home Office</span>
+            <button class="room-save" onclick="toggleSave(this)"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="room-body">
+            <div class="room-style">Scandinavian</div>
+            <div class="room-name">Nordic Focus Studio</div>
+            <div class="room-desc">Distraction-free workspace with warm wood tones and clever organisation.</div>
+            <div class="room-footer">
+              <div class="room-price">From ₹28,000</div>
+              <div class="room-rating"><i class="bi bi-star-fill"></i> 4.9 <span style="color:#a08870;">(88)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Room 6 -->
+      <div class="col-lg-4 col-md-6 room-item" data-style="bohemian">
+        <div class="room-card reveal">
+          <div class="room-img-wrap">
+            <img src="https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=600&auto=format&fit=crop" alt="Eclectic Dining"/>
+            <span class="room-tag">Dining Room</span>
+            <button class="room-save" onclick="toggleSave(this)"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="room-body">
+            <div class="room-style">Bohemian</div>
+            <div class="room-name">Eclectic Gathering Place</div>
+            <div class="room-desc">Mismatched chairs, rattan pendants, and a long reclaimed-wood table for lively dinners.</div>
+            <div class="room-footer">
+              <div class="room-price">From ₹38,000</div>
+              <div class="room-rating"><i class="bi bi-star-fill"></i> 4.8 <span style="color:#a08870;">(61)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-5 reveal">
+      <a href="#" class="btn-outline-custom">View All Inspirations</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── STYLE QUIZ CTA ─────────────── -->
+<section id="quiz">
+  <div class="container">
+    <div class="quiz-inner reveal">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <div class="section-eyebrow quiz-eyebrow">Style Quiz</div>
+          <h2 class="quiz-heading">Discover Your<br><em>Decor Personality</em></h2>
+          <p class="quiz-sub">Tell us about your style and we'll generate a fully personalised mood board and shopping guide — completely free.</p>
+          <div class="quiz-options" id="quizOpts">
+            <span class="quiz-opt" onclick="selectOpt(this)">Minimalist</span>
+            <span class="quiz-opt" onclick="selectOpt(this)">Maximalist</span>
+            <span class="quiz-opt" onclick="selectOpt(this)">Earthy & Natural</span>
+            <span class="quiz-opt" onclick="selectOpt(this)">Bold & Dramatic</span>
+            <span class="quiz-opt" onclick="selectOpt(this)">Soft & Romantic</span>
+            <span class="quiz-opt" onclick="selectOpt(this)">Industrial Chic</span>
+          </div>
+          <button class="btn-quiz" onclick="startQuiz()">Get My Style Profile →</button>
+        </div>
+        <div class="col-lg-6">
+          <div class="quiz-img-wrap">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&auto=format&fit=crop" alt="Beautiful Living Room"/>
+            <div class="quiz-img-tag">
+              <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; opacity:0.5; margin-bottom:2px;">Style Match</div>
+              <div style="font-family:var(--font-display); font-size:1.1rem;">Organic Modern</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── TESTIMONIALS ─────────────── -->
+<section id="testimonials">
+  <div class="container">
+    <div class="row justify-content-between align-items-end mb-5 reveal">
+      <div class="col-lg-5">
+        <div class="section-eyebrow">Happy Homeowners</div>
+        <h2 class="section-heading">Spaces That<br><em>People Love</em></h2>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <p style="color:#7a6a5a; font-size:13px;">Over 9,400 homes transformed — here's what our community has to say.</p>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6 reveal">
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <div class="testi-quote">"</div>
+          <div class="testi-text">DecorNest completely transformed how I think about my home. The personalised ideas were spot-on — my living room finally feels like me.</div>
+          <div class="testi-author">
+            <img src="https://i.pravatar.cc/80?img=47" class="testi-avatar" alt="Priya S."/>
+            <div>
+              <div class="testi-name">Priya Sharma</div>
+              <div class="testi-loc">Mumbai, India</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 reveal">
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <div class="testi-quote">"</div>
+          <div class="testi-text">I spent months not knowing where to start. DecorNest's quiz gave me clarity in 5 minutes. The mood boards are absolutely stunning.</div>
+          <div class="testi-author">
+            <img src="https://i.pravatar.cc/80?img=32" class="testi-avatar" alt="Arjun M."/>
+            <div>
+              <div class="testi-name">Arjun Mehta</div>
+              <div class="testi-loc">Bangalore, India</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 reveal">
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <div class="testi-quote">"</div>
+          <div class="testi-text">The Japandi bedroom design I found here completely changed my relationship with sleep. Worth every rupee spent on the featured products.</div>
+          <div class="testi-author">
+            <img src="https://i.pravatar.cc/80?img=5" class="testi-avatar" alt="Sneha R."/>
+            <div>
+              <div class="testi-name">Sneha Reddy</div>
+              <div class="testi-loc">Hyderabad, India</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── NEWSLETTER ─────────────── -->
+<section id="newsletter">
+  <div class="container">
+    <div class="newsletter-wrap reveal">
+      <div>
+        <h3 class="newsletter-heading">Weekly <em>Decor</em> Drops</h3>
+        <p class="newsletter-sub">Fresh ideas, trend reports, and exclusive deals — every Thursday.</p>
+      </div>
+      <div class="newsletter-form">
+        <input type="email" class="newsletter-input" placeholder="your@email.com" id="nlEmail"/>
+        <button class="newsletter-submit" onclick="subscribeNL()">Subscribe</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── FOOTER ─────────────── -->
+<footer>
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4">
+        <a href="#" class="footer-logo">Decor<span>Nest</span></a>
+        <p class="footer-tagline">Your home, reimagined. Curated decor inspiration for every style and every budget.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="social-link"><i class="bi bi-pinterest"></i></a>
+          <a href="#" class="social-link"><i class="bi bi-youtube"></i></a>
+          <a href="#" class="social-link"><i class="bi bi-twitter-x"></i></a>
+        </div>
+      </div>
+      <div class="col-6 col-lg-2">
+        <div class="footer-heading">Explore</div>
+        <ul class="footer-links">
+          <li><a href="#">Living Rooms</a></li>
+          <li><a href="#">Bedrooms</a></li>
+          <li><a href="#">Kitchens</a></li>
+          <li><a href="#">Bathrooms</a></li>
+          <li><a href="#">Home Offices</a></li>
+          <li><a href="#">Outdoor Spaces</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-lg-2">
+        <div class="footer-heading">Styles</div>
+        <ul class="footer-links">
+          <li><a href="#">Scandinavian</a></li>
+          <li><a href="#">Bohemian</a></li>
+          <li><a href="#">Japandi</a></li>
+          <li><a href="#">Industrial</a></li>
+          <li><a href="#">Coastal</a></li>
+          <li><a href="#">Art Deco</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-lg-2">
+        <div class="footer-heading">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press Kit</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-lg-2">
+        <div class="footer-heading">Support</div>
+        <ul class="footer-links">
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Cookie Settings</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="footer-divider"/>
+    <div class="footer-bottom">
+      <span>© 2025 DecorNest. All rights reserved.</span>
+      <span>Crafted with <span style="color:var(--terracotta);">♥</span> for beautiful homes.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ─────────────── SCRIPTS ─────────────── -->
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+$(function () {
+
+  /* ── Custom Cursor ── */
+  const $cursor = $('#cursor');
+  const $ring = $('#cursorRing');
+  $(document).on('mousemove', function (e) {
+    $cursor.css({ left: e.clientX, top: e.clientY });
+    setTimeout(() => $ring.css({ left: e.clientX, top: e.clientY }), 60);
+  });
+  $('a, button, .cat-card, .room-card, .filter-btn, .quiz-opt, .mosaic-card').on('mouseenter', function () {
+    $cursor.css({ width: 16, height: 16, background: 'var(--earth)' });
+    $ring.css({ width: 52, height: 52 });
+  }).on('mouseleave', function () {
+    $cursor.css({ width: 10, height: 10, background: 'var(--terracotta)' });
+    $ring.css({ width: 36, height: 36 });
+  });
+
+  /* ── Navbar Scroll ── */
+  $(window).on('scroll', function () {
+    if ($(this).scrollTop() > 60) {
+      $('#mainNav').addClass('scrolled');
+      $('#backTop').addClass('show');
+    } else {
+      $('#mainNav').removeClass('scrolled');
+      $('#backTop').removeClass('show');
+    }
+  });
+
+  /* ── Scroll Reveal ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => $(entry.target).addClass('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  $('.reveal').each(function () { observer.observe(this); });
+
+  /* ── Counter Animation ── */
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const $el = $(entry.target);
+        const target = parseInt($el.data('target'));
+        let current = 0;
+        const inc = target / 60;
+        const timer = setInterval(() => {
+          current += inc;
+          if (current >= target) { $el.text(target.toLocaleString() + '+'); clearInterval(timer); }
+          else $el.text(Math.floor(current).toLocaleString());
+        }, 24);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  $('.counter').each(function () { counterObserver.observe(this); });
+
+  /* ── Room Filter ── */
+  $('#roomFilter').on('click', '.filter-btn', function () {
+    const filter = $(this).data('filter');
+    $('#roomFilter .filter-btn').removeClass('active');
+    $(this).addClass('active');
+    if (filter === 'all') {
+      $('.room-item').fadeIn(300);
+    } else {
+      $('.room-item').each(function () {
+        if ($(this).data('style') === filter) $(this).fadeIn(300);
+        else $(this).fadeOut(200);
+      });
+    }
+  });
+
+  /* ── Back to Top ── */
+  $('#backTop').on('click', function () {
+    $('html, body').animate({ scrollTop: 0 }, 600, 'swing');
+  });
+
+  /* ── Smooth Nav Links ── */
+  $('a.nav-link[href^="#"]').on('click', function (e) {
+    const target = $(this).attr('href');
+    if ($(target).length) {
+      e.preventDefault();
+      $('html, body').animate({ scrollTop: $(target).offset().top - 80 }, 700);
+    }
+  });
+
+  /* ── Navbar active on scroll ── */
+  $(window).on('scroll', function () {
+    const pos = $(this).scrollTop() + 100;
+    $('section[id]').each(function () {
+      const top = $(this).offset().top;
+      const id = $(this).attr('id');
+      if (pos >= top && pos < top + $(this).outerHeight()) {
+        $('.nav-link').removeClass('active');
+        $(`.nav-link[href="#${id}"]`).addClass('active');
+      }
+    });
+  });
+
+});
+
+/* ── Toggle Save ── */
+function toggleSave(btn) {
+  const $btn = $(btn);
+  $btn.toggleClass('saved');
+  $btn.html($btn.hasClass('saved') ? '<i class="bi bi-heart-fill"></i>' : '<i class="bi bi-heart"></i>');
+}
+
+/* ── Quiz ── */
+function selectOpt(el) { $(el).toggleClass('selected'); }
+function startQuiz() {
+  const selected = $('.quiz-opt.selected').map(function () { return $(this).text(); }).get();
+  if (!selected.length) {
+    alert('Please select at least one style option!');
+    return;
+  }
+  const styles = selected.join(', ');
+  $('<div style="position:fixed;inset:0;background:rgba(30,26,23,0.8);z-index:9000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);">' +
+    '<div style="background:var(--cream);border-radius:8px;padding:60px 48px;max-width:440px;text-align:center;">' +
+    '<div style="font-family:var(--font-display);font-size:2.2rem;font-weight:300;color:var(--earth);margin-bottom:12px;">Your Style: <em style="color:var(--terracotta);">' + styles + '</em></div>' +
+    '<p style="color:#7a6a5a;font-size:13.5px;line-height:1.75;margin-bottom:28px;">Wonderful! We\'re crafting your personalised mood board and decor guide. You\'ll receive it in your inbox shortly.</p>' +
+    '<button onclick="$(this).closest(\'div\').parent().remove()" style="background:var(--terracotta);color:#fff;border:none;border-radius:2px;padding:12px 32px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-family:var(--font-body);cursor:pointer;">Close</button>' +
+    '</div></div>').appendTo('body');
+}
+
+/* ── Newsletter ── */
+function subscribeNL() {
+  const email = $('#nlEmail').val();
+  if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+  $('#nlEmail').val('');
+  $('<div style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--earth);color:var(--cream);padding:14px 32px;border-radius:4px;font-size:13px;letter-spacing:0.5px;z-index:9999;box-shadow:0 8px 24px rgba(30,26,23,0.25);">🌿 You\'re on the list! First drop arrives Thursday.</div>')
+    .appendTo('body').delay(3200).fadeOut(400, function () { $(this).remove(); });
+}
+</script>
+</body>
+</html>
